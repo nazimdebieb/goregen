@@ -115,6 +115,10 @@ func StartServer(version string, rbox *regenbox.RegenBox, cfg *Config, cfgPath s
 	// load previous live data
 	err := util.ReadTomlFile(&srv.liveData, srv.liveDataPath)
 	if err != nil {
+		if cfg.Regenbox.Ticker <=0{
+			//ensure we have a valid value, or use 15s by default
+			cfg.Regenbox.Ticker = liveInterval
+		}
 		srv.liveData = util.NewTimeSeries(livePoints, liveInterval)
 	} else {
 		// shift start time relative to now
